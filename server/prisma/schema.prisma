@@ -11,6 +11,23 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(uuid())
-  name String
+  id        String   @id @default(uuid())
+  githubId  Int      @unique
+  name      String
+  login     String
+  avatarUrl String
+  memories  Memory[] //Um usuário pode ter várias memórias
+}
+
+model Memory {
+  id        String   @id @default(uuid())
+  coverUrl  String
+  content   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  //Toda memória pertence a um usuário do tipo User
+  user User @relation(fields: [userId], references: [id])
+
+  userId String
 }
